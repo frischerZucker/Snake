@@ -26,6 +26,10 @@ public class Snake {
 		 * creates the first node (head) of the snake
 		 */
 		snake.add(new SnakeNode(BOARD_WIDTH / 2, BOARD_HEIGHT / 2, UP));
+		
+		addNode();
+		addNode();
+		addNode();
 	}
 
 	/*

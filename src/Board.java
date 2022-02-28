@@ -5,6 +5,8 @@ public class Board {
 	
 	public int[] board;
 	
+	public Boolean isSnakeTouchingItself = false;
+	
 	public Board(int boardWidth, int boardHeight) {
 		BOARD_WIDTH = boardWidth;
 		BOARD_HEIGHT = boardHeight;
@@ -45,9 +47,31 @@ public class Board {
 		}
 		
 		/*
+		 * adds the border again
+		 */
+		for (int a = 0; a < BOARD_WIDTH; a++) {
+			board[a] = BORDER;
+			board[a + (BOARD_HEIGHT - 1) * BOARD_WIDTH] = BORDER;
+		}
+		for (int a = 0; a < BOARD_HEIGHT; a++) {
+			board[a * BOARD_WIDTH] = BORDER;
+			try {
+				board[(a * BOARD_WIDTH) - 1] = BORDER;
+			} catch (Exception e) {
+			}
+		}
+		
+		/*
 		 * adds all new nodes of the snake to the board
 		 */
 		for (SnakeNode node : snake.getSnake()) {
+			/*
+			 * checks if the snake is crossing over / crashed into itself
+			 */
+			if(board[node.x + node.y * BOARD_WIDTH] == SNAKE) {
+				isSnakeTouchingItself = true;				
+			}
+			
 			board[node.x + node.y * BOARD_WIDTH] = SNAKE;
 		}
 	}

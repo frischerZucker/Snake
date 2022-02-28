@@ -34,8 +34,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
 	private Thread thread;
 
-//TODO board in eigene Klasse auslagern
-
 	private int[] pixels;
 
 	/*
@@ -72,30 +70,24 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		 */
 		img = new BufferedImage(BOARD_WIDTH, BOARD_HEIGHT, BufferedImage.TYPE_INT_RGB);
 		pixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
-
-		/*
-		 * initializes a array that stores the content of the board
-		 */
-		board = new Board(BOARD_WIDTH, BOARD_HEIGHT);
-
-		/*
-		 * direction the snake is moving to in the beginning
-		 */
-		direction = UP;
-
-		/*
-		 * creates a new snake with a length of 4
-		 */
-		snake = new Snake(BOARD_WIDTH, BOARD_HEIGHT);
-		snake.addNode();
-		snake.addNode();
-		snake.addNode();
-
-		board.addApple();
+		
+		initializeNewGame();
 
 		thread = new Thread(this);
 
 		start();
+	}
+	
+	/*
+	 * is called to start a new game
+	 */
+	private void initializeNewGame() {
+		board = new Board(BOARD_WIDTH, BOARD_HEIGHT);
+		snake = new Snake(BOARD_WIDTH, BOARD_HEIGHT);
+		direction = UP;
+		board.addApple();
+		score = 0;
+		isGameOver = false;
 	}
 
 	private Boolean checkForCollision(int object) {
@@ -211,17 +203,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				snake.addNode();
 
 				board.addApple();
-
-				/*
-				 * checks for collision to check if the snakes tail grows into the border
-				 */
-//				if(checkForCollision(BORDER)) {
-//					isGameOver = true;
-//					continue;
-//				}
 			}
 
 			board.updateBoard(snake);
+			
+			isGameOver = isGameOver || board.isSnakeTouchingItself;
 
 			updateScreen();
 
@@ -247,6 +233,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
 		if (isGameOver) {
 			g.drawString("GAME OVER", 100, panelSize.height / 2);
+			g.setFont(new Font("", 1, 25));
+			g.drawString("  press SPACE to restart", 100, panelSize.height / 2 + 30);
 		}
 
 		if (isPaused) {
@@ -260,27 +248,36 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		int key = e.getKeyCode();
+		
 		/*
 		 * keyevents for movement
 		 */
-		if (e.getKeyCode() == KeyEvent.VK_W && !direction.equals(DOWN)) {
+		if (key == KeyEvent.VK_W && !direction.equals(DOWN)) {
 			direction = UP;
-		} else if (e.getKeyCode() == KeyEvent.VK_S && !direction.equals(UP)) {
+		} else if (key == KeyEvent.VK_S && !direction.equals(UP)) {
 			direction = DOWN;
-		} else if (e.getKeyCode() == KeyEvent.VK_A && !direction.equals(RIGHT)) {
+		} else if (key == KeyEvent.VK_A && !direction.equals(RIGHT)) {
 			direction = LEFT;
-		} else if (e.getKeyCode() == KeyEvent.VK_D && !direction.equals(LEFT)) {
+		} else if (key == KeyEvent.VK_D && !direction.equals(LEFT)) {
 			direction = RIGHT;
 		}
 		/*
 		 * keyevent used to pause the game
 		 */
-		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+		else if (key == KeyEvent.VK_ESCAPE) {
+			if(isGameOver) {
+				return;
+			}
 			if (isPaused) {
 				isPaused = false;
 			} else {
 				isPaused = true;
 			}
+		}
+		
+		else if (key == KeyEvent.VK_SPACE && (isGameOver)) {
+			initializeNewGame();
 		}
 	}
 
