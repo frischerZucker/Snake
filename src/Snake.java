@@ -7,7 +7,7 @@ public class Snake {
 	/*
 	 * constants for the directions towards the snake can move
 	 */
-	private final String UP = "up", DOWN = "down", RIGHT = "right", LEFT = "left";
+	private final byte UP = 1, DOWN = 2, RIGHT = 3, LEFT = 4;
 
 	private final int BOARD_WIDTH, BOARD_HEIGHT;
 
@@ -35,7 +35,7 @@ public class Snake {
 	/*
 	 * function that moves the snake one step in a direction
 	 */
-	public void updateSnakePosition(String direction) {
+	public void updateSnakePosition(byte direction) {
 		snake.get(0).direction = direction;
 
 		/*
@@ -59,7 +59,7 @@ public class Snake {
 		/*
 		 * direction of the last node
 		 */
-		String direction = snake.get(snake.size() - 1).direction;
+		byte direction = snake.get(snake.size() - 1).direction;
 
 		/*
 		 * coordinates of the last node
@@ -70,11 +70,11 @@ public class Snake {
 		/*
 		 * moves coordinates one step in the opposite direction of the last node
 		 */
-		if (direction.equals(RIGHT)) {
+		if (direction == RIGHT) {
 			x -= 1;
-		} else if (direction.equals(LEFT)) {
+		} else if (direction == LEFT) {
 			x += 1;
-		} else if (direction.equals(DOWN)) {
+		} else if (direction == DOWN) {
 			y -= 1;
 		} else {
 			y += 1;
@@ -91,11 +91,11 @@ public class Snake {
 	 * returns the node one step in the input nodes direction
 	 */
 	private SnakeNode nodeInFrontOfNode(SnakeNode node) {
-		if (node.direction.equals(UP)) {
+		if (node.direction==UP) {
 			node.y -= 1;
-		} else if (node.direction.equals(DOWN)) {
+		} else if (node.direction==DOWN) {
 			node.y += 1;
-		} else if (node.direction.equals(RIGHT)) {
+		} else if (node.direction==RIGHT) {
 			node.x += 1;
 		} else {
 			node.x -= 1;

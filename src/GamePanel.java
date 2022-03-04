@@ -21,12 +21,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	/*
 	 * constants for the directions towards the snake can move
 	 */
-	private final String UP = "up", DOWN = "down", RIGHT = "right", LEFT = "left";
+	private final byte UP = 1, DOWN = 2, RIGHT = 3, LEFT = 4;
 
 	/*
 	 * constants that represent possible states of the board and what they mean
 	 */
-	private final int SNAKE = 1, BORDER = 2, APPLE = 3;
+	private final byte SNAKE = 1, BORDER = 2, APPLE = 3;
 
 	private Dimension panelSize;
 
@@ -41,10 +41,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	 */
 	private int tickSpeed = 5, score = 0;
 
-	private String direction;
+	private byte direction;
 
-	private Boolean isRunning = false, isPaused = false, isGameOver = false;
-
+	private boolean isRunning = false, isPaused = false, isGameOver = false;
+	
 	private Snake snake;
 
 	private Board board;
@@ -186,8 +186,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
 			snake.updateSnakePosition(direction);
 
-			// TODO check for collision with snake
-
 			/*
 			 * checks for a collision with the border, which would toggle a "game over"
 			 */
@@ -253,13 +251,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		/*
 		 * keyevents for movement
 		 */
-		if (key == KeyEvent.VK_W && !direction.equals(DOWN)) {
+		if (key == KeyEvent.VK_W && direction!=DOWN) {
 			direction = UP;
-		} else if (key == KeyEvent.VK_S && !direction.equals(UP)) {
+		} else if (key == KeyEvent.VK_S && direction!=UP) {
 			direction = DOWN;
-		} else if (key == KeyEvent.VK_A && !direction.equals(RIGHT)) {
+		} else if (key == KeyEvent.VK_A && direction!=RIGHT) {
 			direction = LEFT;
-		} else if (key == KeyEvent.VK_D && !direction.equals(LEFT)) {
+		} else if (key == KeyEvent.VK_D && direction!=LEFT) {
 			direction = RIGHT;
 		}
 		/*

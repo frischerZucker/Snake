@@ -1,11 +1,11 @@
 public class Board {
-	public final int SNAKE = 1, BORDER = 2, APPLE = 3;
+	public final byte SNAKE = 1, BORDER = 2, APPLE = 3;
 	
 	private final int BOARD_WIDTH, BOARD_HEIGHT;
 	
-	public int[] board;
+	public byte[] board;
 	
-	public Boolean isSnakeTouchingItself = false;
+	public boolean isSnakeTouchingItself = false;
 	
 	public Board(int boardWidth, int boardHeight) {
 		BOARD_WIDTH = boardWidth;
@@ -15,7 +15,7 @@ public class Board {
 	}
 	
 	private void initializeBoard() {
-		board = new int[BOARD_WIDTH * BOARD_HEIGHT];
+		board = new byte[BOARD_WIDTH * BOARD_HEIGHT];
 	
 		/*
 		 * adds black borders at the edge of the board

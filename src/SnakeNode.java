@@ -5,9 +5,9 @@
 public class SnakeNode {
 	public int x, y;
 
-	public String direction;
+	public byte direction;
 
-	public SnakeNode(int x, int y, String direction) {
+	public SnakeNode(int x, int y, byte direction) {
 		this.x = x;
 		this.y = y;
 
